@@ -1,0 +1,20 @@
+{
+	"items" : [
+		{
+			"name" : "Home Kindle TRMNL",
+			"priority" : -10,
+			"items" : [
+				{
+					"name" : "Start Home Kindle TRMNL",
+					"priority" : 100,
+					"action" : "./scripts/start.sh"
+				},
+				{
+					"name" : "Stop Home Kindle TRMNL",
+					"priority" : 100,
+					"action" : "./scripts/stop.sh"
+				}
+			]
+		}
+	]
+}

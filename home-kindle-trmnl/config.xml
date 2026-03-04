@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<extension>
+	<information>
+		<id>home-kindle-trmnl</id>
+		<name>Home Kindle TRMNL</name>
+		<version>1.0.0</version>
+		<author>Luke Phillips</author>
+	</information>
+	<menus>
+		<menu type="json" dynamic="true">menu.json</menu>
+	</menus>
+</extension>
