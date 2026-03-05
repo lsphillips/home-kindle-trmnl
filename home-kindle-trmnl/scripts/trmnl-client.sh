@@ -143,8 +143,9 @@ while true; do
 
 	log "Rendered screen image successfully."
 
-	# Fake user activity.
-	lipc-set-prop com.lab126.powerd userActivity 1
+	# Prevent screen saver.
+	lipc-set-prop com.lab126.powerd touchScreenSaverTimeout 2147483647
+	lipc-set-prop com.lab126.powerd preventScreenSaver 1
 
 	# Sleep until we should fetch the next screen.
 	sleep "$REFRESH_RATE"
