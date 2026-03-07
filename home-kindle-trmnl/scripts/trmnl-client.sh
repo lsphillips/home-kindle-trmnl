@@ -122,15 +122,27 @@ while true; do
 		REFRESH_RATE="30"
 	fi
 
+	# Check image type.
+	IMAGE_TYPE=$(echo "$IMAGE_URL" | sed 's/?.*//' | sed 's/.*\.\([^.]*\)$/\1/' | tr '[:upper:]' '[:lower:]')
+
+	if [ "$IMAGE_TYPE" != "png" ] && [ "$IMAGE_TYPE" != "bmp" ]; then
+		log "Screen image must be a png or bmp image type, server returned $IMAGE_TYPE. Waiting for 30 seconds to try again."
+		sleep 30
+		continue
+	fi
+
 	# Download screen image.
-	if ! curl -s --connect-timeout 5 -o "$APP_DIR/screen.tmp.png" "$IMAGE_URL" || [ ! -s "$APP_DIR/screen.tmp.png" ]; then
-		rm -f "$APP_DIR/screen.tmp.png"
+	SCREEN_TMP_PATH="$APP_DIR/screen.tmp.$IMAGE_TYPE"
+	SCREEN_PATH="$APP_DIR/screen.$IMAGE_TYPE"
+
+	if ! curl -s --connect-timeout 5 -o "$SCREEN_TMP_PATH" "$IMAGE_URL" || [ ! -s "$SCREEN_TMP_PATH" ]; then
+		rm -f "$SCREEN_TMP_PATH"
 		log "Failed to download screen image. Waiting for 30 seconds to try again."
 		sleep 30
 		continue
 	fi
 
-	mv "$APP_DIR/screen.tmp.png" "$APP_DIR/screen.png"
+	mv "$SCREEN_TMP_PATH" "$SCREEN_PATH"
 
 	log "Downloaded screen image successfully."
 
@@ -139,7 +151,7 @@ while true; do
 	sleep 1
 
 	# Render screen image.
-	eips -g "$APP_DIR/screen.png" -x "0" -y "0"
+	eips -g "$SCREEN_PATH" -x "0" -y "0"
 
 	log "Rendered screen image successfully."
 
