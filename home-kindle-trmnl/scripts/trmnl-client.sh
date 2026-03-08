@@ -46,7 +46,7 @@ get_mac_address() {
 	echo "$address"
 }
 
-get_battery_level() {
+get_battery_percentage() {
 	local result=$(lipc-get-prop com.lab126.powerd status)
 	echo "$result" | grep "Battery Level:" | cut -d ":" -f2 | tr -d '% '
 }
@@ -79,7 +79,7 @@ while true; do
 
 	# Fetch signal strength & battery level.
 	RSSI=$(get_signal_strength)
-	BATTERY=$(get_battery_level)
+	BATTERY=$(get_battery_percentage)
 
 	log "RSSI: $RSSI"
 	log "Battery: $BATTERY"
@@ -88,7 +88,8 @@ while true; do
 	SCREEN=$(
 		curl -s --connect-timeout 5 \
 		  -H "access-token: $API_KEY" \
-		  -H "battery-voltage: $BATTERY" \
+		  -H "battery-voltage: 0" \
+		  -H "battery-percentage: $BATTERY" \
 		  -H "width: $WIDTH" \
 		  -H "height: $HEIGHT" \
 		  -H "rssi: $RSSI" \
