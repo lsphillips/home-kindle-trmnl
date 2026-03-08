@@ -8,15 +8,15 @@ A KUAL (Kindle Unified Application Launcher) extension that turns your jailbroke
 ## Installation
 
 1. Download this repository.
-2. Update the `home-kindle-trmnl/trmnl-client.sh` script and replace the following:
+2. Update the `home-kindle-trmnl/config.conf` file and replace the following:
   - `<api-key>`\
-    With the API key you have configured for the device on your TRMNL server.
+    With the API key you have configured for the device on your TRMNL server. **Most Kindle devices do not support mDNS (multicast DNS), so `.local` domains will fail to resolve.**
   - `<base-url>`\
     The base URL to your TRMNL server.
 3. Connect your Kindle device and copy the `home-kindle-trmnl` directory to the `/extensions` directory on your Kindle.
 
-> [!WARNING]
-> Most Kindle devices do not support mDNS (multicast DNS), so `.local` domains will fail to resolve.
+> [!TIP]
+> When installing updates, do not copy the `config.conf` file as it will overwrite your configuration.
 
 ## Usage
 
@@ -29,6 +29,16 @@ Once installed, when you open KUAL you will see a **Home Kindle TRMNL** extensio
 
 ### Debugging
 
-If you encountering issues, you can enable `debug` mode by updating the `trmnl-client.sh` by setting the `DEBUG` variable to `true`. This will result in logs being written to a file in the `/home-kindle-trmnl/logs` directory; the log file are organized by date.
+If you encountering issues, you can enable `debug` mode by updating the `/extensions/home-kindle-trmnl/config.conf` file by setting the `DEBUG` variable to `true`. This will result in logs being written to a file in the `/home-kindle-trmnl/logs` directory on your Kindle; the log files are organized by date.
 
-In addition, if you have `debug` mode enabled, you can view the current screen image at `/home-kindle-trmnl/screen.png` or `/home-kindle-trmnl/screen.bmp` (depending on the image type your TRMNL server returns).
+Furthermore, when you have `debug` mode enabled you can view the current screen image at `/home-kindle-trmnl/screen.png` or `/home-kindle-trmnl/screen.bmp` (depending on the image type your TRMNL server returns).
+
+## FAQ
+
+### Why is the battery level being reported as `0%`?
+
+Kindle's do not report a battery voltage, but a battery percentage, and most TRMNL servers expect the former. This client sets the typically supported `battery-voltage` header to `0` and sends the battery level in a `battery-percentage` header.
+
+### What screen image types are supported?
+
+This client only supports `.png` and `.bmp` for the screen images at the moment.

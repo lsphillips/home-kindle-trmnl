@@ -3,11 +3,14 @@
 # Settings
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-API_KEY="<api-key>"
-BASE_URL="<base-url>"
+API_KEY=""
+BASE_URL=""
 DEBUG=false
 APP_DIR="/mnt/us/home-kindle-trmnl"
 LOG_DIR="$APP_DIR/logs"
+
+# Load user configuration.
+. "$(dirname "$0")/../config.conf"
 
 # Utility Functions
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -57,6 +60,11 @@ get_signal_strength() {
 
 # Client
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+if [ -z "$API_KEY" ] || [ -z "$BASE_URL" ]; then
+	log "API_KEY and BASE_URL must be configured in your config.conf file."
+	exit 1
+fi
 
 # Create application directories.
 mkdir -p "$APP_DIR"
